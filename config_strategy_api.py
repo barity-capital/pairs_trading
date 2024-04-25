@@ -7,9 +7,9 @@
 """
 
 # API imports
-from binance.cm_futures import CMFutures
+# from binance.cm_futures import CMFutures
 import asyncio
-import websockets
+# import websockets
 import ssl
 # from func_prices_klines import time_start_seconds
 
