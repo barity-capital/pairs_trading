@@ -19,13 +19,13 @@ print(time_start_seconds)
 
 
 # Get historical prices (klines)
-# def get_prices_klines(symbol,timeframe):
+def get_prices_klines(symbol,timeframe):
 
-# # #     # Get prices
-#     kline_info = query_mark_price_kline(symbol=symbol, interval=timeframe)
-#     for i in kline_info:
-#         # print(i)
-#         return i[4]
+# #     # Get prices
+    kline_info = query_mark_price_kline(symbol=symbol, interval=timeframe)
+    for i in kline_info:
+        # print(i)
+        return i[4]
 
          
 # get_prices_klines("BTCUSDT", "1h")

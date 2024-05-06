@@ -1,19 +1,19 @@
+from config_execution_api import client
 
-# WebSocket Stream Client
-import time
-from binance.websocket.um_futures.websocket_client import UMFuturesWebsocketClient
-import logging
-def message_handler(_, message):
-    logging.info(message)
+# def get_top_5_orders(ticker):
+#     client.fu(symbol=ticker, limit=5)
+#     return liquidity, last_price
+def get_avtive_positions(ticker): # ticker, direction = "Long"
 
-my_client = UMFuturesWebsocketClient(on_message=message_handler)
+    # Get position
+    position = client.futures_position_information(symbol = ticker)
 
-# Subscribe to a single symbol stream
-my_client.diff_book_depth(symbol="bnbusdt")
-#print data in real time for my_client.agg_trade(symbol="bnbusdt")
+    print(position)
 
-# Subscribe to multiple symbol streams
+get_avtive_positions("ZENUSDT")
 
-time.sleep(5)
-logging.info("closing ws connection")
-my_client.stop()
+"""
+1 BTC = 60k USDT
+---
+x BTC = 50 USDT
+"""

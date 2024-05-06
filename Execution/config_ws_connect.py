@@ -1,27 +1,117 @@
 import websocket
 import json
-from config_execution_api import ticker_1, ws_public_url, ticker_2
-from func_calculation import get_trade_details
+import ssl
 import time
-# Define your WebSocket event handlers here
-def on_message(ws, message):
 
-    data = json.loads(message)
-    unpacked_data = data["data"]
+from config_execution_api import ticker_1, ticker_2, signal_positive_ticker, signal_negative_ticker
+from config_execution_api import ticker_1, ws_public_url, ticker_2
+from config_execution_api import api_key, api_secret
+from func_execution_calls import place_order
+from func_position_calls import open_order_confirmation, active_position_confirmation
+from func_execution_calls import set_leverage
+from func_save_status import save_status
+from func_get_zscore import get_latest_zscore
+from func_trade_management import manage_new_trade
+from func_close_position import close_all_positions
+
+def on_message(ws, message):
+    global count
+    global signal_side
+
+    if count == 0:
+        # Initial printout
+        print("Hello, Anh Tung la anh nao?")
+
+        # Initialize variables
+        status_dict = {"message": "bat dau ne..."}
+        order_long = {}
+        order_short = {}
+        signal_sign_positive = False
+        kill_switch = 0
+        signal_side = ''
+
+
+        # Set leverage in case forgotten to do so in platform
+        print("Setting leverage...")
+        set_leverage(signal_positive_ticker)
+        set_leverage(signal_negative_ticker)
+
+        # Comment bot
+        print("Cho ti dcmm, sap ra tien roi...")
+        data = json.loads(message)
+
+        orderbook = data["data"]
+
+        # current_zscore, signal_sign, zscore_list = get_latest_zscore(orderbook)
+        # # print("Zscore Updated:", zscore_list)
+        # print("Current zscore is not hot:", current_zscore)
+
+        # Check if open trade already exists
+        is_p_ticker_active = active_position_confirmation(orderbook)
+        is_n_ticker_active = active_position_confirmation(orderbook)
+        is_p_ticker_open = open_order_confirmation(orderbook)
+        is_n_ticker_open = open_order_confirmation(orderbook)
+        # print("done")
         
+        check_all = [is_p_ticker_active, is_n_ticker_active, is_p_ticker_open, is_n_ticker_open]
+        is_manage_new_trades = not all(check_all)
+        # print(is_manage_new_trades)
+
+        # Update status_dict with values of check_all
+        if is_manage_new_trades and kill_switch == 0:
+            # current_zscore, signal_sign, zscore_list = get_latest_zscore(orderbook)
+            # print("Current zscore is not hot:", zscore_list)
+            status_dict["message"] = "Initial check made..."
+            status_dict["checks"] = check_all
+            save_status(status_dict)
+            kill_switch, signal_side, enter_trade_zscore = manage_new_trade(orderbook, kill_switch)
+            
+            # return kill_switch
+            # print("Current zscore: ", current_zscore, "Enter zscore: ", enter_trade_zscore)
         
-    # print(data)
-    # for i in data:
-    #     print(i)
-    trade_details = get_trade_details(unpacked_data, direction ="Long", capital = 1000)
-    # trade_details[0]
-    print(trade_details)
+            # print(kill_switch)
+
+        # Managing open kill switch
+    # if count == 1:    
+        while kill_switch == 1:
+            current_zscore = get_latest_zscore(orderbook)
+            print("Current zscore: ", current_zscore[0], "Current sign:", current_zscore[1], "Enter zscore: ", enter_trade_zscore, "Enter sign: ", signal_side)
+            # Close positions
+            if signal_side == "positive" and current_zscore[0] < 0 and abs(current_zscore[0]) > 2:
+                kill_switch = 2
+                # count += 1
+            if signal_side == "negative" and current_zscore[0] >= 0 and current_zscore[0] > 2:
+                kill_switch = 2
+                # count += 1
+            # Put back to zero if trades are closed
+            # if is_manage_new_trades and kill_switch != 2:
+            #     kill_switch = 0
+
+        # Close all active orders and positions
+        if kill_switch == 2:
+            status_dict["message"] = "Tao ban do ton kho..."
+            kill_switch = close_all_positions(kill_switch)
+
+          # Increment count to indicate that the order has been placed
+    # count += 1
+    # # Check for signal side change
+    # while True:
+    #     if signal_side == "positive" or signal_side == "negative":
+    #         break
+    #     time.sleep(1)
+
+    # # Continue with further actions based on signal_side
+    # if signal_side == "positive":
+    #     # Perform actions when signal_side changes to positive
+    #     pass
+    # elif signal_side == "negative":
+    #     # Perform actions when signal_side changes to negative
+    #     pass
 
 def on_error(ws, error):
     print("Error:", error)
 
 def on_close(ws):
-    
     print("WebSocket closed")
 
 def on_open(ws):
@@ -33,76 +123,20 @@ ticker_1 = ticker_1.lower()
 ticker_2 = ticker_2.lower()
 ws_public_url = "wss://fstream.binance.com"
 tickers = [ticker_1, ticker_2]
+count = 0
 
-# Connect to the WebSocket streams for each ticker
-start_time = time.time()
-while True:
-    for ticker in tickers:
-        stream_url = f"{ws_public_url}/stream?streams={ticker_1}@depth{levels}/{ticker_2}@depth{levels}"
-
-        # Connect to WebSocket
-        websocket.enableTrace(True)
-        ws = websocket.WebSocketApp(stream_url,
-                                    on_message=on_message,
-                                    on_error=on_error,
-                                    on_close=on_close)
-        ws.on_open = on_open
-        # Close after running for 5 minutes
-        print("hellp")
-        ws.run_forever()
-
-    time.sleep(5)
-
-
-
-
-
-# import websocket
-# import json
-# from config_execution_api import ticker_1, ws_public_url, ticker_2, rounding_ticker_1, rounding_ticker_2, quantity_rounding_ticker_1, quantity_rounding_ticker_2
-# import time
-# from func_calculation import get_trade_details
-# def on_message(ws, message):
-#     data = json.loads(message)
-#     print(data)
-
-# def on_error(ws, error):
-#     print(error)
-
-# def on_close(ws):
-#     print("### closed ###")
-
-# def on_open(ws):
-#     print("### connected ###")
-
-
-# levels = 5
-# # Convert ticker_1 to lower case
-# ticker_1 = ticker_1.lower()
-# ticker_2 = ticker_2.lower()
 # while True:
-#     for ticker in [ticker_1, ticker_2]:
-#         stream_url = f"{ws_public_url}/{ticker}@depth{levels}"
+        # Connect to the WebSocket streams for each ticker
+for ticker in tickers:
+    stream_url = f"{ws_public_url}/stream?streams={ticker_1}@depth{levels}/{ticker_2}@depth{levels}"
+    
+    # Connect to WebSocket with SSL certificate verification disabled
+    websocket.enableTrace(True)
+    ws = websocket.WebSocketApp(stream_url,
+                                on_message=on_message,
+                                on_error=on_error,
+                                on_close=on_close)
+    ws.on_open = on_open
 
-#         websocket.enableTrace(True)
-#         ws = websocket.WebSocketApp(stream_url,
-#                                     on_message=on_message,
-#                                     on_error=on_error,
-#                                     on_close=on_close)
-#         ws.on_open = on_open
-#         ws.run_forever()
-
-#         # access to websocket object and make a variable to contain "s"
-#         ws["s"] = ticker
-#         # get_trade_details(ws, direction ="Long", capital = 0)
-#         # if ticker_1.upper() == ws["s"]:
-#         #     price_rounding = rounding_ticker_1
-#         # else:
-#         #     rounding_ticker_2
-#         # quantity_rounding = quantity_rounding_ticker_1 if ticker_1.upper() == ws["s"] else quantity_rounding_ticker_2
-
-
-#         # for data in ws:
-#         #     print(data["s"])
-#     # Wait for some time before fetching data for the next symbol
-#     time.sleep(10)  # Adjust the sleep duration as needed
+    # Continuously receive messages from the WebSocket connection
+    ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})

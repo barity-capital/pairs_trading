@@ -8,20 +8,19 @@
     wss://fstream.binance.com/ws/bnbusdt@aggTrade
     wss://fstream.binance.com/stream?streams=bnbusdt@aggTrade/btcusdt@markPrice
 """
-
-from config_execution_api import *
 import time
 import logging
 import json
 import asyncio
 import websockets
 import ssl
+from binance.client import Client
 
 
 # Config variables
 mode = "on"
-ticker_1 = "SOLUSDT"
-ticker_2 = "LTCUSDT"
+ticker_1 = "AGIXUSDT"
+ticker_2 = "OCEANUSDT" # OCEANUSDT
 signal_positive_ticker = ticker_2
 signal_negative_ticker = ticker_1
 rounding_ticker_1 = 2
@@ -29,11 +28,11 @@ rounding_ticker_2 = 2
 quantity_rounding_ticker_1 = 0
 quantity_rounding_ticker_2 = 3
 
-limit_order_basis = True # Will ensure positions (expect for close) will be placed on limit basis
+limit_order_basis = False # Will ensure positions (expect for close) will be placed on limit basis
 
-tradeable_capital_usdt = 2000 # Total tradeable capital to be split between both pairs
+tradeable_capital_usdt = 50 # Total tradeable capital to be split between both pairs
 stop_loss_fail_safe = 0.15 # Stop loss at market order in case of drastic event
-signal_trigger_thresh = 1.5 # Z-score threshold to trigger signal (must above 0)
+signal_trigger_thresh = 2 # Z-score threshold to trigger signal (must above 0)
 
 timeframe = "1h" # make sure matches your strategy timeframe
 kline_limit = 500 # make sure matches your strategy timeframe
@@ -55,3 +54,5 @@ api_secret = api_secret_testnet if mode == "test" else api_secret_mainnet
 api_url = "https://testnet.binancefuture.com" if mode == "test" else "https://fapi.binance.com"
 ws_public_url = "wss://testnet.binance.vision/ws-api" if mode == "test" else "wss://fstream.binance.com/ws"
 
+# Client
+client = Client(api_key, api_secret)

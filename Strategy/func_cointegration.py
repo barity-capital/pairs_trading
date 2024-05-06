@@ -29,13 +29,15 @@ def calculate_cointegration(series1, series2):
     model = sm.OLS(series1, series2).fit()
     hedge_ratio = model.params[0]
     spread = calculate_spread(series1, series2, hedge_ratio)
+
+    zscore_list = calculate_zscore(spread)
     
     zero_crossing = len(np.where(np.diff(np.sign(spread)))[0])
     # print(zero_crossing)
     if p_value < 0.05 and coint_t < critical_value:
         coint_flag = 1
     # print( (coint_flag, round(p_value, 2), round(coint_t, 2), round(critical_value, 2), round(hedge_ratio, 2),zero_crossing))
-    return (coint_flag, round(p_value, 2), round(coint_t, 2), round(critical_value, 2), round(hedge_ratio, 2),zero_crossing)
+    return (coint_flag, round(p_value, 2), round(coint_t, 2), round(critical_value, 2), round(hedge_ratio, 2),zero_crossing, zscore_list)
     
 
 # Put close prices into a list
@@ -98,6 +100,7 @@ def get_cointegrated_pairs(prices):
                             "critical_value": coint_result[3],
                             "hedge_ratio": coint_result[4],
                             "zero_crossing": coint_result[5],
+                            "zscore": coint_result[6]
                             # "spread": coint_result[5],
                             # "residuals": coint_result[7]
                         })

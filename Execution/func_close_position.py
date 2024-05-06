@@ -1,18 +1,24 @@
 from config_execution_api import *
-from binance.client import Client
 import datetime
 import time
+import requests
+import time
+import hashlib
+import hmac
+import urllib.parse
 
 # Create a function to return position info by passing api_url
 
 
-client = Client(api_key, api_secret)
 # Get position info
 def get_position_info(ticker):
     
     size = ""
     side = 0
     position_info = client.futures_position_information()
+
+    # Get open orders from clien
+
     for i in position_info:
         if i["symbol"] == ticker:
             # if ticker == ticker:
@@ -29,8 +35,8 @@ def get_position_info(ticker):
             # current_position = float(i["positionAmt"])
             # print(float(i["positionAmt"]))
     return (size, side)
-pos_info = get_position_info("ZENUSDT")
-print(pos_info)
+# pos_info = get_position_info("")
+# print(pos_info)
 
 time_start_date =0
 if timeframe == "1h":
@@ -54,4 +60,30 @@ def place_market_close_order(ticker, side, size):
         quantity = abs(size[0])
     )
     return
-place_market_close_order("ZENUSDT", pos_info, pos_info)
+
+# # Close all positions for both ticker
+def close_all_positions(kill_switch):
+
+
+    # # Cancel all active order
+    client.futures_cancel_all_open_orders(symbol = signal_positive_ticker)
+    client.futures_cancel_all_open_orders(symbol = signal_negative_ticker)
+    
+    # Get position info
+    pos_infor_positive = get_position_info(ticker = signal_positive_ticker)
+    pos_infor_negative = get_position_info(ticker = signal_negative_ticker)
+
+    # # # Get position info
+    # # side_1 = get_position_info(signal_positive_ticker)[1]
+    # # size_1 = get_position_info(signal_positive_ticker)[0]
+
+    # # side_2 = get_position_info(signal_negative_ticker)[1]
+    # # size_2 = get_position_info(signal_negative_ticker)[0]
+
+    # # Close position
+    place_market_close_order(signal_positive_ticker, pos_infor_positive, pos_infor_positive)
+    place_market_close_order(signal_negative_ticker, pos_infor_negative, pos_infor_negative)
+    kill_switch = 0
+    return kill_switch
+
+# close_all_positions()

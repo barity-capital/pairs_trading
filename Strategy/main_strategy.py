@@ -10,7 +10,7 @@ warnings.simplefilter(action="ignore",category= FutureWarning)
 """Chien luoc giao dich"""
 if __name__ == "__main__":
 
-    # # Step 1 - Get list of symbols
+    # Step 1 - Get list of symbols
     # print("Getting symbols...")
     # sym_response = get_tradeable_symbols()
     
@@ -19,9 +19,8 @@ if __name__ == "__main__":
     # if len(sym_response) > 0:
     #     store_price_history(sym_response)
 
-    # #Step 3 - Find Cointegrated Pairs
+    #Step 3 - Find Cointegrated Pairs
     # print("Finding Cointegrated Pairs...")
-
 
     # # Open the JSON file
     # with open("price_history.json", "r") as file:
@@ -31,8 +30,8 @@ if __name__ == "__main__":
         
     # Step 4: plot trends and save for backtesting
     print("Plotting trends...")
-    symbol_1 = "SOLUSDT"
-    symbol_2 = "LTCUSDT"
+    symbol_1 = "OCEANUSDT"
+    symbol_2 = "AGIXUSDT"
     with open("price_history.json") as file:
         price_data = json.load(file)
         if len(price_data) > 0:
