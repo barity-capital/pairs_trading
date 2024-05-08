@@ -65,6 +65,7 @@ def on_message(ws, message):
             status_dict["checks"] = check_all
             save_status(status_dict)
             kill_switch, signal_side, enter_trade_zscore = manage_new_trade(orderbook, kill_switch)
+            # print("")
             
             # return kill_switch
             # print("Current zscore: ", current_zscore, "Enter zscore: ", enter_trade_zscore)
@@ -75,6 +76,8 @@ def on_message(ws, message):
     # if count == 1:    
         while kill_switch == 1:
             current_zscore = get_latest_zscore(orderbook)
+
+            
             print("Current zscore: ", current_zscore[0], "Current sign:", current_zscore[1], "Enter zscore: ", enter_trade_zscore, "Enter sign: ", signal_side)
             # Close positions
             if signal_side == "positive" and current_zscore[0] < 0 and abs(current_zscore[0]) > 2:
@@ -127,16 +130,20 @@ count = 0
 
 # while True:
         # Connect to the WebSocket streams for each ticker
-for ticker in tickers:
-    stream_url = f"{ws_public_url}/stream?streams={ticker_1}@depth{levels}/{ticker_2}@depth{levels}"
-    
-    # Connect to WebSocket with SSL certificate verification disabled
-    websocket.enableTrace(True)
-    ws = websocket.WebSocketApp(stream_url,
-                                on_message=on_message,
-                                on_error=on_error,
-                                on_close=on_close)
-    ws.on_open = on_open
+try:
+    for ticker in tickers:
+        stream_url = f"{ws_public_url}/stream?streams={ticker_1}@depth{levels}/{ticker_2}@depth{levels}"
+        
+        # Connect to WebSocket with SSL certificate verification disabled
+        websocket.enableTrace(True)
+        ws = websocket.WebSocketApp(stream_url,
+                                    on_message=on_message,
+                                    on_error=on_error,
+                                    on_close=on_close)
+        ws.on_open = on_open
 
-    # Continuously receive messages from the WebSocket connection
-    ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})
+        # Continuously receive messages from the WebSocket connection
+        ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})
+
+except Exception as e:
+    print("Error:", e)

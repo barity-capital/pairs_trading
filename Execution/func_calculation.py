@@ -100,6 +100,7 @@ def get_trade_details(orderbook, direction ="Long", capital = 50):
     # Output result
     # print(f"Mid price: {mid_price}, Quantity: {quantity}")
     # fix mid and quantity to have same precision
+    time.sleep(5)
     return rounded_price, rounded_quantity
 
 

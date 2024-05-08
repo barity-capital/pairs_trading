@@ -3,6 +3,7 @@ from func_prices_call import get_price_klines
 from func_stats import calculate_zscore_coint
 from config_execution_api import ticker_1, ticker_2, signal_positive_ticker, signal_negative_ticker
 import numpy as np
+import time
 
 def get_latest_zscore(orderbook):
     mid_price_long = get_trade_details(orderbook, direction="Long")    
@@ -32,24 +33,6 @@ def get_latest_zscore(orderbook):
         series_2.append(mid_price_short[0])
         
         
-    # if orderbook["s"].lower() == signal_positive_ticker:
-    #     mid_pice = get_trade_details(orderbook)
-    #     # print(mid_price[0])
-    #     # Append mid price to series
-
-    #     series_1.append(mid_pice[0])
-    #     print(series_1)
-    #     # convert to numpy array
-    #     # trimmed_series_1 = 
-    #     # np.array(trimmed_series)
-    # if orderbook["s"].lower() == signal_negative_ticker:
-    #     mid_pice = get_trade_details(orderbook)
-    #     series_2.append(mid_pice[0])
-        # for string_price in series_2:
-        #     string_price = float(string_price)
-        # series_2.append(mid_pice[0])
-            # trimmed_series_2 = np.array(trimmed_series)
-    # print(series_1, series_2)
     zscore_list = calculate_zscore_coint(series_1, series_2)
     # print(zscore_list)
     zscore = zscore_list[1][-1]
@@ -59,6 +42,7 @@ def get_latest_zscore(orderbook):
     else:
         signal_sign = False
     # print(zscore, signal_sign)
+    time.sleep(5)
     return zscore, signal_sign, zscore_list
 
     # series_1, series_2 = get_price_klines()

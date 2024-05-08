@@ -40,7 +40,7 @@ def get_price_klines():
 
         
     # Manage API calls
-    time.sleep(0.1)
+    time.sleep(5)
 
     # Return prices output
     # print(series_1, series_2)

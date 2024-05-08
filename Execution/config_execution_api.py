@@ -30,9 +30,9 @@ quantity_rounding_ticker_2 = 3
 
 limit_order_basis = False # Will ensure positions (expect for close) will be placed on limit basis
 
-tradeable_capital_usdt = 50 # Total tradeable capital to be split between both pairs
+tradeable_capital_usdt = 50 # Total tradeable capital to be split between both pairs # Test lower liquidity
 stop_loss_fail_safe = 0.15 # Stop loss at market order in case of drastic event
-signal_trigger_thresh = 2 # Z-score threshold to trigger signal (must above 0)
+signal_trigger_thresh = 0 # Z-score threshold to trigger signal (must above 0)
 
 timeframe = "1h" # make sure matches your strategy timeframe
 kline_limit = 500 # make sure matches your strategy timeframe
