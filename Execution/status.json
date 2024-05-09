@@ -3,7 +3,7 @@
     "checks": [
         false,
         false,
-        false,
-        false
+        true,
+        true
     ]
 }
