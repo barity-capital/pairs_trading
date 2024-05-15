@@ -1,11 +1,11 @@
 from config_execution_api import *
-import datetime
+# import datetime
+# import time
+# import requests
 import time
-import requests
-import time
-import hashlib
-import hmac
-import urllib.parse
+# import hashlib
+# import hmac
+# import urllib.parse
 
 # Create a function to return position info by passing api_url
 
@@ -38,12 +38,12 @@ def get_position_info(ticker):
 # pos_info = get_position_info("")
 # print(pos_info)
 
-time_start_date =0
-if timeframe == "1h":
-    time_start_date = datetime.datetime.now() - datetime.timedelta(hours=kline_limit)
-if timeframe == "1d":
-    time_start_date = datetime.datetime.now() - datetime.timedelta(days=kline_limit)
-time_start_seconds = int(time_start_date.timestamp())
+# time_start_date =0
+# if timeframe == "1h":
+#     time_start_date = datetime.datetime.now() - datetime.timedelta(hours=kline_limit)
+# if timeframe == "1d":
+#     time_start_date = datetime.datetime.now() - datetime.timedelta(days=kline_limit)
+# time_start_seconds = int(time_start_date.timestamp())
 # Place close market order
 def place_market_close_order(ticker, side, size):
     if side[1] == "LONG":

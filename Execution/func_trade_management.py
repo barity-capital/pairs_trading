@@ -42,7 +42,7 @@ def get_liquidity(ticker):
 
 # get_liquidity("BTCUSDT")
 
-import time
+# import time
 
 def manage_new_trade(orderbook, kill_switch):
 
