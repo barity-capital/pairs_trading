@@ -8,12 +8,6 @@
     wss://fstream.binance.com/ws/bnbusdt@aggTrade
     wss://fstream.binance.com/stream?streams=bnbusdt@aggTrade/btcusdt@markPrice
 """
-import time
-import logging
-import json
-import asyncio
-import websockets
-import ssl
 from binance.client import Client
 
 
@@ -34,7 +28,7 @@ limit_order_basis = False
 # Total tradeable capital to be split between both pairs # Test lower liquidity
 tradeable_capital_usdt = 50
 stop_loss_fail_safe = 0.15  # Stop loss at market order in case of drastic event
-signal_trigger_thresh = 0  # Z-score threshold to trigger signal (must above 0)
+signal_trigger_thresh = 2  # Z-score threshold to trigger signal (must above 0)
 
 timeframe = "1h"  # make sure matches your strategy timeframe
 kline_limit = 500  # make sure matches your strategy timeframe

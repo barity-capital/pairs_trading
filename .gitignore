@@ -792,3 +792,6 @@ env/Lib/site-packages/_distutils_hack/__init__.py
 env/Lib/site-packages/__pycache__/six.cpython-311.pyc
 
 Execution/__pycache__
+venv
+__pycache__
+Refined_Execution/

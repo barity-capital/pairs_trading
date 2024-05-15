@@ -20,10 +20,10 @@ def on_message(ws, message):
 
     if count == 0:
         # Initial printout
-        print("Hello, Anh Tung la anh nao?")
+        print("Initilizing...")
 
         # Initialize variables
-        status_dict = {"message": "bat dau ne..."}
+        status_dict = {"message": "Start now!"}
         order_long = {}
         order_short = {}
         signal_sign_positive = False
@@ -37,7 +37,7 @@ def on_message(ws, message):
         set_leverage(signal_negative_ticker)
 
         # Comment bot
-        print("Cho ti dcmm, sap ra tien roi...")
+        print("Getting orderbook information...")
         data = json.loads(message)
 
         orderbook = data["data"]
@@ -131,19 +131,19 @@ count = 0
 # while True:
         # Connect to the WebSocket streams for each ticker
 try:
-    for ticker in tickers:
-        stream_url = f"{ws_public_url}/stream?streams={ticker_1}@depth{levels}/{ticker_2}@depth{levels}"
-        
-        # Connect to WebSocket with SSL certificate verification disabled
-        websocket.enableTrace(True)
-        ws = websocket.WebSocketApp(stream_url,
-                                    on_message=on_message,
-                                    on_error=on_error,
-                                    on_close=on_close)
-        ws.on_open = on_open
 
-        # Continuously receive messages from the WebSocket connection
-        ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})
+    stream_url = f"{ws_public_url}/stream?streams={ticker_1}@depth{levels}/{ticker_2}@depth{levels}"
+    
+    # Connect to WebSocket with SSL certificate verification disabled
+    # websocket.enableTrace(True)
+    ws = websocket.WebSocketApp(stream_url,
+                                on_message=on_message,
+                                on_error=on_error,
+                                on_close=on_close)
+    ws.on_open = on_open
+
+    # Continuously receive messages from the WebSocket connection
+    ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})
 
 except Exception as e:
     print("Error:", e)

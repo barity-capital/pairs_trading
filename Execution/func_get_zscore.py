@@ -6,6 +6,7 @@ import numpy as np
 import time
 
 def get_latest_zscore(orderbook):
+    
     mid_price_long = get_trade_details(orderbook, direction="Long")    
     mid_price_short = get_trade_details(orderbook, direction="Short")    
 

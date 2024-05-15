@@ -31,7 +31,7 @@ def extract_close_prices(prices):
     return close_prices
 
 # Get trade details and latest prices
-def get_trade_details(orderbook, direction ="Long", capital = 50):
+def get_trade_details(orderbook, direction = "Long", capital = 50):
     
     # for i in orderbook["b"]:
     #     print(i)
@@ -100,7 +100,7 @@ def get_trade_details(orderbook, direction ="Long", capital = 50):
     # Output result
     # print(f"Mid price: {mid_price}, Quantity: {quantity}")
     # fix mid and quantity to have same precision
-    time.sleep(5)
+    # time.sleep(5)
     return rounded_price, rounded_quantity
 
 
