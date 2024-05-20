@@ -154,7 +154,7 @@ def manage_new_trade(orderbook, kill_switch):
             time.sleep(1)
 
             # Check limit order and ensure zscore still within range
-        zscore_new= get_latest_zscore(orderbook)
+        zscore_new = get_latest_zscore(orderbook)
         # print(zscore_new, signal_sign_new)
         while kill_switch == 0:
             if abs(zscore_new[0]) > signal_trigger_thresh * 0.9 and zscore_new[1] == signal_sign:

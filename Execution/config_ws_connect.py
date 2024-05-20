@@ -77,7 +77,6 @@ def on_message(ws, message):
         while kill_switch == 1:
             current_zscore = get_latest_zscore(orderbook)
 
-            
             print("Current zscore: ", current_zscore[0], "Current sign:", current_zscore[1], "Enter zscore: ", enter_trade_zscore, "Enter sign: ", signal_side)
             # Close positions
             if signal_side == "positive" and current_zscore[0] < 0 and abs(current_zscore[0]) > 2:

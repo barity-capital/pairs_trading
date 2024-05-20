@@ -8,8 +8,6 @@ import statsmodels.api as sm
 import pandas as pd
 import numpy as np
 
-
-
 def calculate_spread(series1, series2, hedge_ratio):
     spread = pd.Series(series1) - (pd.Series(series2) * hedge_ratio)
     return spread
@@ -33,6 +31,7 @@ def calculate_zscore_coint(series1, series2):
     spread = calculate_spread(series1, series2, hedge_ratio)
     
     zscore_list = calculate_zscore(spread)
+    # print("Zscore: ", zscore_list)
     # print(zero_crossing)
     if p_value < 0.05 and coint_t < critical_value:
         coint_flag = 1

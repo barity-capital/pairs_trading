@@ -4,6 +4,7 @@ from func_stats import calculate_zscore_coint
 from config_execution_api import ticker_1, ticker_2, signal_positive_ticker, signal_negative_ticker
 import numpy as np
 import time
+import math
 
 def get_latest_zscore(orderbook):
     
@@ -36,12 +37,14 @@ def get_latest_zscore(orderbook):
         
     zscore_list = calculate_zscore_coint(series_1, series_2)
     # print(zscore_list)
-    zscore = zscore_list[1][-1]
+    zscore_with_nan = zscore_list[1]
+    filtered_list = [x for x in zscore_with_nan if not (isinstance(x, float) and math.isnan(x))]
+    zscore = filtered_list[0]
         # print(zscore)
     if zscore > 0:
-            signal_sign = True
+            signal_sign = True # positive
     else:
-        signal_sign = False
+        signal_sign = False # negative
     # print(zscore, signal_sign)
     time.sleep(5)
     return zscore, signal_sign, zscore_list
