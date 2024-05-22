@@ -60,7 +60,7 @@ def on_message(ws, message):
         # Update status_dict with values of check_all
         if is_manage_new_trades and kill_switch == 0:
             # current_zscore, signal_sign, zscore_list = get_latest_zscore(orderbook)
-            # print("Current zscore is not hot:", zscore_list)
+            # print("Current zscore is not hot:", current_zscore)
             status_dict["message"] = "Initial check made..."
             status_dict["checks"] = check_all
             save_status(status_dict)
@@ -79,10 +79,10 @@ def on_message(ws, message):
 
             print("Current zscore: ", current_zscore[0], "Current sign:", current_zscore[1], "Enter zscore: ", enter_trade_zscore, "Enter sign: ", signal_side)
             # Close positions
-            if signal_side == "positive" and current_zscore[0] < 0 and abs(current_zscore[0]) > 2:
+            if signal_side == "positive" and current_zscore[0] < -2.0:
                 kill_switch = 2
                 # count += 1
-            if signal_side == "negative" and current_zscore[0] >= 0 and current_zscore[0] > 2:
+            if signal_side == "negative" and current_zscore[0] > 2.0:
                 kill_switch = 2
                 # count += 1
             # Put back to zero if trades are closed
