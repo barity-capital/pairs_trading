@@ -4,11 +4,6 @@ from config_execution_api import client
 #     client.fu(symbol=ticker, limit=5)
 #     return liquidity, last_price
 
-requests = client.get_account()
+requests = client.futures_klines("oceanusdt", "1h")
 print(requests)
 
-"""
-1 BTC = 60k USDT
----
-x BTC = 50 USDT
-"""

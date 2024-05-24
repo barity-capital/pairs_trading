@@ -35,18 +35,15 @@ def get_latest_zscore(orderbook):
         series_2.append(mid_price_short[0])
         
         
-    zscore_list = calculate_zscore_coint(series_1, series_2)
-    # print(zscore_list)
-    zscore_with_nan = zscore_list[1]
-    filtered_list = [x for x in zscore_with_nan if not (isinstance(x, float) and math.isnan(x))]
-    zscore = filtered_list[0]
-        # print(zscore)
-    if zscore > 0:
-            signal_sign = True # positive
-    else:
-        signal_sign = False # negative
-    # print(zscore, signal_sign)
-    time.sleep(5)
+        zscore_list = calculate_zscore_coint(series_1, series_2)
+        zscore = zscore_list[1][-1]
+            # print(zscore)
+        if zscore > 0:
+                signal_sign = True # positive
+        else:
+            signal_sign = False # negative
+        # print(zscore, signal_sign)
+        time.sleep(5)
     return zscore, signal_sign, zscore_list
 
     # series_1, series_2 = get_price_klines()

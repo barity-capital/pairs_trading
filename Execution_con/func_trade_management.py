@@ -64,10 +64,9 @@ def manage_new_trade(orderbook, kill_switch):
 
     # Switch to hot if meets threshold
     if abs(enter_trade_zscore) > signal_trigger_thresh:
-        # Activate hot trigger
-        hot = True
-        print("Em nay dang HOT nhe")
-        print("Dang dat va choi em nay")
+        # Activate hot trigger       hot = True
+        print("Enter trade zscore:", enter_trade_zscore)
+        print("Dang dat va choi con di nay")
     elif abs(enter_trade_zscore) < signal_trigger_thresh:
         hot = False
     

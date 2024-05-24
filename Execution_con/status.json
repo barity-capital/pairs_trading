@@ -1,8 +1,8 @@
 {
     "message": "Initial check made...",
     "checks": [
-        false,
-        false,
+        true,
+        true,
         false,
         false
     ]

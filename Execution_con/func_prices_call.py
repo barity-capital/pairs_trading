@@ -38,8 +38,6 @@ def get_price_klines():
             for i in prices_2:
                 series_2.append(float(i[4]))
                                        
-
-        
     # Manage API calls
     time.sleep(5)
 
