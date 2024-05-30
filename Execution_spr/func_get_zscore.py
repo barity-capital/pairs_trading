@@ -1,10 +1,11 @@
 from func_calculation import get_trade_details
 from func_prices_call import get_price_klines
-from func_stats import calculate_zscore_coint
+from func_stats import calculate_spread_coint
 from config_execution_api import ticker_1, ticker_2, signal_positive_ticker, signal_negative_ticker
 import numpy as np
 import time
 import math
+import pandas as pd
 
 def get_latest_zscore(orderbook):
 
@@ -37,16 +38,22 @@ def get_latest_zscore(orderbook):
         series_2.append(mid_price_short[0])
         
         
-        zscore_list = calculate_zscore_coint(series_1, series_2)
-        zscore = zscore_list[1][-1]
-            # print(zscore)
-        if zscore > 0:
+        coint_flag, spread, zscore_list = calculate_spread_coint(series_1, series_2) # zscore_list = 
+        # spread_df = pd.DataFrame(spread)
+        # # print(spread_df)
+        zscore = zscore_list[-1]
+        spread_new = spread[-1]
+        # print(spread_new)
+        # spread_new = spread_df.iat[-1,1]
+        # print(zscore)
+    #         # print(zscore)
+        if zscore > 0 and spread_new > 0:
                 signal_sign = True # positive
-        else:
+        elif zscore < 0 and spread_new < 0:
             signal_sign = False # negative
-        # print(zscore, signal_sign)
-        time.sleep(5)
-    return zscore, signal_sign, zscore_list
+    #     # print(zscore, signal_sign)
+        time.sleep(1)
+    return zscore, signal_sign, zscore_list, spread_new
 
     # series_1, series_2 = get_price_klines()
     # # Get latest asset orderbook prices and add dummy price for latest

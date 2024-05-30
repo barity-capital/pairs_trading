@@ -59,12 +59,13 @@ def on_message(ws, message):
 
         # Update status_dict with values of check_all
         if is_manage_new_trades and kill_switch == 0:
-            current_zscore, signal_sign, zscore_list = get_latest_zscore(orderbook)
-            print("Current zscore is not hot:", zscore_list)
+            current_zscore, signal_sign, zscore_list, current_spread = get_latest_zscore(orderbook)
+            print("Anh thay em nay the nao?")
+            print("Vong 1:", current_zscore, "Vong 2:", current_spread)
             status_dict["message"] = "Initial check made..."
             status_dict["checks"] = check_all
             save_status(status_dict)
-            # kill_switch, signal_side, enter_trade_zscore = manage_new_trade(orderbook, kill_switch)
+            kill_switch, signal_side, enter_trade_zscore, enter_trade_spread = manage_new_trade(orderbook, kill_switch)
             # print("")
             
             # return kill_switch
@@ -75,16 +76,16 @@ def on_message(ws, message):
         # Managing open kill switch
     # if count == 1:    
         while kill_switch == 1:
-            updated_zscore, signal_sign, zscore_list = get_latest_zscore(orderbook)
+            updated_zscore, signal_sign, zscore_list, updated_spread = get_latest_zscore(orderbook)
 
-            print("Current zscore: ", updated_zscore, "Current sign:", signal_sign, "Enter zscore: ", enter_trade_zscore, "Enter sign: ", signal_side)
+            print("Current zscore: ", updated_zscore, "Enter zscore: ", enter_trade_zscore, "Current spread: ", updated_spread, "Enter spread:", enter_trade_spread)
 
             time.sleep(1)
             # Close positions
-            if signal_side == "positive" and updated_zscore < -2.0:
+            if signal_side == "positive" and updated_spread < 0:
                 kill_switch = 2
                 # count += 1
-            if signal_side == "negative" and updated_zscore > 2.0:
+            if signal_side == "negative" and updated_spread > 0:
                 kill_switch = 2
                 # count += 1
             # Put back to zero if trades are closed

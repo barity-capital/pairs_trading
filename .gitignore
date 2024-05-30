@@ -791,7 +791,10 @@ env/Lib/site-packages/_distutils_hack/__pycache__/__init__.cpython-311.pyc
 env/Lib/site-packages/_distutils_hack/__init__.py
 env/Lib/site-packages/__pycache__/six.cpython-311.pyc
 
-Execution/__pycache__
+Execution_con/__pycache__
+Execution_div/__pycache__
+Execution_spr/__pycache__
+Strategy/__pycache__
 venv
 __pycache__
 Refined_Execution/
