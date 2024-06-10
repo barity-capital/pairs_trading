@@ -64,7 +64,7 @@ def on_message(ws, message):
             status_dict["message"] = "Initial check made..."
             status_dict["checks"] = check_all
             save_status(status_dict)
-            # kill_switch, signal_side, enter_trade_zscore = manage_new_trade(orderbook, kill_switch)
+            kill_switch, signal_side, enter_trade_zscore = manage_new_trade(orderbook, kill_switch)
             # print("")
             
             # return kill_switch
