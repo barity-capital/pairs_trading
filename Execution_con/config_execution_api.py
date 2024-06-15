@@ -35,8 +35,8 @@ kline_limit = 500  # make sure matches your strategy timeframe
 z_score_window = 21  # make sure matches your strategy timeframe
 
 # Live API
-api_key_mainnet = ""
-api_secret_mainnet = ""
+api_key_mainnet = "X5YOXEAJAvbsy57O0RG9y1LZTtfJpHKtBSZu05iDDF1biOryTqp0RXHkIMuXZgcE"
+api_secret_mainnet = "qc6ets7DqAROveLD2YYN3RUtOBZDsOQjNNzJOxxqWE4F0pzGYYl7ky2x7KbVkH00"
 
 # Test API
 api_key_testnet = ""

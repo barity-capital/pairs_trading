@@ -66,7 +66,7 @@ def manage_new_trade(orderbook, kill_switch):
     if abs(enter_trade_zscore) > signal_trigger_thresh:
         # Activate hot trigger      
         hot = True
-        print("Enter trade zscore:", enter_trade_zscore)
+        # print("Enter trade zscore:", enter_trade_zscore)
         print("Dang dat va choi con di nay")
     elif abs(enter_trade_zscore) < signal_trigger_thresh:
         hot = False
@@ -126,7 +126,7 @@ def manage_new_trade(orderbook, kill_switch):
 
         remaining_capital_long = capital_long
         remaining_capital_short = capital_short
-        print(initial_capital_usdt_short, initial_capital_usdt_long)
+        # print(initial_capital_usdt_short, initial_capital_usdt_long)
         # while kill_switch == 0:
         if not orders_long_placed and not orders_short_placed:  # Check if orders are already placed
             # Place order - long

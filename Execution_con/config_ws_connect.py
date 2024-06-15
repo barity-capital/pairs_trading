@@ -3,6 +3,7 @@ import json
 import ssl
 import time
 
+
 from config_execution_api import ticker_1, ticker_2, signal_positive_ticker, signal_negative_ticker
 from config_execution_api import ticker_1, ws_public_url, ticker_2
 from config_execution_api import api_key, api_secret
@@ -59,12 +60,12 @@ def on_message(ws, message):
 
         # Update status_dict with values of check_all
         if is_manage_new_trades and kill_switch == 0:
-            current_zscore, signal_sign, zscore_list = get_latest_zscore(orderbook)
-            print("Current zscore is not hot:", zscore_list)
+            current_zscore, enter_signal_sign, zscore_list = get_latest_zscore(orderbook)
+            # print("Current zscore is not hot:", zscore_list)
             status_dict["message"] = "Initial check made..."
             status_dict["checks"] = check_all
             save_status(status_dict)
-            kill_switch, signal_side, enter_trade_zscore = manage_new_trade(orderbook, kill_switch)
+            kill_switch, enter_signal_side, enter_trade_zscore = manage_new_trade(orderbook, kill_switch)
             # print("")
             
             # return kill_switch
@@ -75,16 +76,19 @@ def on_message(ws, message):
         # Managing open kill switch
     # if count == 1:    
         while kill_switch == 1:
-            updated_zscore, signal_sign, zscore_list = get_latest_zscore(orderbook)
+            updated_zscore, current_signal_sign, zscore_list = get_latest_zscore(orderbook)
+            # if updated_zscore*enter_trade_zscore > 0:
+            #     current_signal_side = "positive"
 
-            print("Current zscore: ", updated_zscore, "Current sign:", signal_sign, "Enter zscore: ", enter_trade_zscore, "Enter sign: ", signal_side)
+
+            print(f"Current zscore: {updated_zscore}, Enter zscore: {enter_trade_zscore}")
 
             time.sleep(1)
             # Close positions
-            if signal_side == "positive" and updated_zscore < -2.0:
+            if enter_signal_side == "positive" and enter_signal_sign != current_signal_sign: #enter_signal_side == "positive" and updated_zscore < -2.0
                 kill_switch = 2
                 # count += 1
-            if signal_side == "negative" and updated_zscore > 2.0:
+            if enter_signal_side == "negative" and enter_signal_sign != current_signal_sign: # :
                 kill_switch = 2
                 # count += 1
             # Put back to zero if trades are closed
