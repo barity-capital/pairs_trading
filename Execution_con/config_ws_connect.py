@@ -85,10 +85,10 @@ def on_message(ws, message):
 
             time.sleep(1)
             # Close positions
-            if enter_signal_side == "positive" and enter_signal_sign != current_signal_sign: #enter_signal_side == "positive" and updated_zscore < -2.0
+            if enter_signal_side == "positive" and float(updated_zscore) < 0: #enter_signal_side == "positive" and updated_zscore < -2.0
                 kill_switch = 2
                 # count += 1
-            if enter_signal_side == "negative" and enter_signal_sign != current_signal_sign: # :
+            if enter_signal_side == "negative" and float(updated_zscore) > 0: # :
                 kill_switch = 2
                 # count += 1
             # Put back to zero if trades are closed

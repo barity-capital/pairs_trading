@@ -67,7 +67,7 @@ def manage_new_trade(orderbook, kill_switch):
         # Activate hot trigger      
         hot = True
         # print("Enter trade zscore:", enter_trade_zscore)
-        print("Dang dat va choi con di nay")
+        print("Current zscore is hot:", enter_trade_zscore)
     elif abs(enter_trade_zscore) < signal_trigger_thresh:
         hot = False
     
